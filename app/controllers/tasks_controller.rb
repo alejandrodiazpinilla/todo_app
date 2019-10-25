@@ -3,12 +3,14 @@ class TasksController < ApplicationController
     @task = Task.new
     @to_do =  Task.to_do(current_user)
     @done = Task.done(current_user)
+    # UserMailer.welcome_email(current_user).deliver_now
   end
 
   def create
     @task = Task.new(task_parameter)
     @task.user_id = current_user.id
     @task.save
+    UserMailer.create_email(current_user).deliver_now
   end
 
   def edit
@@ -38,6 +40,7 @@ class TasksController < ApplicationController
     @task = Task.find(params[:id])
     @id = @task.id
     @task.destroy
+    UserMailer.destroy_email(current_user).deliver_now
   end
   private
   
